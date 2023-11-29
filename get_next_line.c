@@ -6,7 +6,7 @@
 /*   By: algultse <algultse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:42:24 by algultse          #+#    #+#             */
-/*   Updated: 2023/11/29 10:45:06 by algultse         ###   ########.fr       */
+/*   Updated: 2023/11/29 11:06:32 by algultse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*get_line(char **save, char *buf, ssize_t bytes_read)
 	char	*line;
 	size_t	len_n;
 
-	ft_bzero(buf, BUFFER_SIZE);
+	ft_bzero(buf, bytes_read);
 	if (bytes_read < 0 || !(*save))
 		return (NULL);
 	while (!bytes_read && !ft_strchr(*save, '\n'))
