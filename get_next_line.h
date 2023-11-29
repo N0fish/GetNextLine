@@ -6,7 +6,7 @@
 /*   By: algultse <algultse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:42:13 by algultse          #+#    #+#             */
-/*   Updated: 2023/11/27 15:25:19 by algultse         ###   ########.fr       */
+/*   Updated: 2023/11/29 10:47:10 by algultse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,5 @@ size_t	ft_strlen(const char *s);
 char	*ft_strdup(const char *s1);
 char	*ft_strchr(const char *s, int c);
 void	ft_bzero(void *str, size_t len);
-size_t	ft_strlcpy(char *dest, const char *src, size_t dstsize);
 
 #endif

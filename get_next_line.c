@@ -6,155 +6,124 @@
 /*   By: algultse <algultse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:42:24 by algultse          #+#    #+#             */
-/*   Updated: 2023/11/27 16:37:10 by algultse         ###   ########.fr       */
+/*   Updated: 2023/11/29 10:45:06 by algultse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*s_dest;
-	char	*p_dest;
-	size_t	len;
+	char			*p;
+	unsigned int	i;
+	size_t			s_len;
 
-	if (!s1 || !s2)
+	if (!s)
 		return (NULL);
-	len = ft_strlen(s1) + ft_strlen(s2);
-	s_dest = malloc(sizeof(char) * (len + 1));
-	if (!s_dest)
-		return (NULL);
-	p_dest = s_dest;
-	while (*s1)
-		*s_dest++ = *s1++;
-	while (*s2)
-		*s_dest++ = *s2++;
-	*s_dest = '\0';
-	return (p_dest);
-}
-
-static char	*buf_line_op(char *tmp, char *line, char *buf, size_t *len_buf_n)
-{
-	free(line);
-	line = NULL;
-	if (!tmp)
-		return (NULL);
-	while (buf[*len_buf_n] && buf[*len_buf_n] != '\n')
-		(*len_buf_n)++;
-	if (buf[*len_buf_n] == '\n')
-		(*len_buf_n)++;
-	line = malloc(sizeof(char) * ((*len_buf_n) + 1));
-	if (!line)
-	{
-		free(tmp);
-		return (NULL);
-	}
-	line[0] = '\0';
-	ft_strlcpy(line, buf, *len_buf_n);
-	return (line);
-}
-
-static char	*update_buf_n_line(char *buf, char *line)
-{
-	char	*tmp;
-	int		i;
-	size_t	len;
-	size_t	len_buf_n;
-	
-	tmp = ft_strdup(line);
-	len_buf_n = 0;
-	line = buf_line_op(tmp, line, buf, &len_buf_n);
-	if (!line)
-		return (NULL);
-	line = ft_strjoin(tmp, line);
-	free(tmp);
-	if (!line)
+	s_len = ft_strlen(s);
+	if (start >= s_len)
+		return (ft_strdup(""));
+	if (len > s_len - start)
+		len = s_len - start;
+	p = malloc(sizeof(char) * (len + 1));
+	if (!p)
 		return (NULL);
 	i = 0;
-	len = ft_strlen(buf);
-	while ((len_buf_n + i) < len)
+	while (*s && len > 0)
 	{
-		buf[i] = buf[len_buf_n + i];
+		p[i] = s[start + i];
 		i++;
+		len--;
 	}
-	buf[i] = '\0';
+	p[i] = '\0';
+	return (p);
+}
+
+char	*get_line(char **save, char *buf, ssize_t bytes_read)
+{
+	char	*line;
+	size_t	len_n;
+
+	ft_bzero(buf, BUFFER_SIZE);
+	if (bytes_read < 0 || !(*save))
+		return (NULL);
+	while (!bytes_read && !ft_strchr(*save, '\n'))
+	{
+		line = ft_strdup(*save);
+		if (!line)
+		{
+			free(*save);
+			*save = NULL;
+			return (NULL);
+		}
+	}
+	len_n = 0;
+	while ((*save)[len_n] != '\n')
+		len_n++;
+	while ((*save)[len_n] == '\n')
+		len_n++;
+	line = ft_substr(*save, 0, len_n);
+	if (ft_strlen(*save) - len_n >= 1)
+		*save = ft_substr(*save, len_n, ft_strlen(*save) - len_n);
 	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	buf[BUFFER_SIZE + 1];
-	char		*line;
+	char		buf[BUFFER_SIZE + 1];
+	static char	*save;
 	ssize_t		bytes_read;
+	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	line = ft_strdup("");
-	if (!line || !update_buf_n_line(buf, line))
-	{
-		free(line);
-		return (NULL);
-	}
-	if (ft_strchr(line, '\n'))
-		return (line);
 	bytes_read = 1;
 	while (bytes_read > 0)
 	{
-		ft_bzero(buf, BUFFER_SIZE);
 		bytes_read = read(fd, buf, BUFFER_SIZE);
 		if (bytes_read == -1)
 			return (NULL);
-		line = update_buf_n_line(buf, line);
-		if (!line)
-			return (NULL);
-		if (!bytes_read || ft_strchr(line, '\n'))
-			return (line);
+		buf[bytes_read] = '\0';
+		if (!save)
+		{
+			save = ft_strdup(buf);
+			if (!save)
+				return(NULL);
+		}
+		else
+		{
+			save = ft_strjoin(save, buf);
+			if (!save)
+				return(NULL);
+		}
+		if (ft_strchr(save, '\n'))
+			break ;
+	}
+	line = get_line(&save, buf, bytes_read);
+	if (!line)
+	{
+		free(save);
+		return (NULL);
 	}
 	return (line);
-}
+}	
 
 /*
 #include <stdio.h>
 #include <fcntl.h>
 int	main()
 {
+	char *res;
 	int	fd = open("./get_next_line.h", O_RDONLY);
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));	
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));	
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
+	// printf("1, %s", get_next_line(fd));
+	// printf("2, %s", get_next_line(fd));
+	// printf("3, %s", get_next_line(fd));
+
+
+	while ((res = get_next_line(fd))) {
+		printf("%s", res);
+	}
+	close(fd);
 	return (0);
 }
 */

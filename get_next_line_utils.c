@@ -6,7 +6,7 @@
 /*   By: algultse <algultse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:42:34 by algultse          #+#    #+#             */
-/*   Updated: 2023/11/27 16:37:18 by algultse         ###   ########.fr       */
+/*   Updated: 2023/11/29 10:44:21 by algultse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,22 +58,4 @@ void	ft_bzero(void *str, size_t len)
 	buf = (unsigned char *)str;
 	while (len--)
 		buf[len] = 0;
-}
-
-size_t	ft_strlcpy(char *dest, const char *src, size_t dstsize)
-{
-	size_t	i;
-
-	i = 0;
-	while (*(src + i))
-		i++;
-	if (!dstsize)
-		return (i);
-	while (*src && dstsize)
-	{
-		*dest++ = *src++;
-		dstsize--;
-	}
-	*dest = '\0';
-	return (i);
 }
