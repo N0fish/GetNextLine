@@ -6,11 +6,12 @@
 /*   By: algultse <algultse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:42:24 by algultse          #+#    #+#             */
-/*   Updated: 2023/11/29 11:06:32 by algultse         ###   ########.fr       */
+/*   Updated: 2023/11/29 16:38:35 by algultse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
@@ -39,15 +40,15 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (p);
 }
 
-char	*get_line(char **save, char *buf, ssize_t bytes_read)
+char	*get_line(char **save, ssize_t bytes_read)
 {
 	char	*line;
 	size_t	len_n;
+	char	*tmp;
 
-	ft_bzero(buf, bytes_read);
-	if (bytes_read < 0 || !(*save))
+	if (bytes_read < 0 || !*save)
 		return (NULL);
-	while (!bytes_read && !ft_strchr(*save, '\n'))
+	if (!bytes_read && !ft_strchr(*save, '\n'))
 	{
 		line = ft_strdup(*save);
 		if (!line)
@@ -56,6 +57,9 @@ char	*get_line(char **save, char *buf, ssize_t bytes_read)
 			*save = NULL;
 			return (NULL);
 		}
+		free(*save);
+		*save = NULL;
+		return (line);
 	}
 	len_n = 0;
 	while ((*save)[len_n] != '\n')
@@ -63,19 +67,41 @@ char	*get_line(char **save, char *buf, ssize_t bytes_read)
 	while ((*save)[len_n] == '\n')
 		len_n++;
 	line = ft_substr(*save, 0, len_n);
-	if (ft_strlen(*save) - len_n >= 1)
-		*save = ft_substr(*save, len_n, ft_strlen(*save) - len_n);
+	if (!line)
+	{
+		free(*save);
+		*save = NULL;
+		return (NULL);
+	}
+	tmp = NULL;
+	if ((ft_strlen(*save) - len_n) >= 1)
+	{
+		tmp = ft_substr(*save, len_n, ft_strlen(*save) - len_n);
+		if (!*tmp)
+		{
+			free(*save);
+			*save = NULL;
+			return (NULL);
+		}
+	}
+	free(*save);
+	*save = NULL;
+	*save = tmp;
 	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	char		buf[BUFFER_SIZE + 1];
 	static char	*save;
+	char		*buf;
 	ssize_t		bytes_read;
-	char		*line;
+	char		*tmp;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	tmp = NULL;
+	buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buf)
 		return (NULL);
 	bytes_read = 1;
 	while (bytes_read > 0)
@@ -84,28 +110,24 @@ char	*get_next_line(int fd)
 		if (bytes_read == -1)
 			return (NULL);
 		buf[bytes_read] = '\0';
-		if (!save)
+		if (bytes_read != 0)
 		{
-			save = ft_strdup(buf);
 			if (!save)
-				return(NULL);
+				tmp = ft_strdup(buf);
+			else
+			{
+				tmp = ft_strjoin(save, buf);
+				free(save);
+				save = NULL;
+			}
+			save = tmp;
+			if (ft_strchr(save, '\n'))
+				break ;
 		}
-		else
-		{
-			save = ft_strjoin(save, buf);
-			if (!save)
-				return(NULL);
-		}
-		if (ft_strchr(save, '\n'))
-			break ;
 	}
-	line = get_line(&save, buf, bytes_read);
-	if (!line)
-	{
-		free(save);
-		return (NULL);
-	}
-	return (line);
+	free(buf);
+	buf = NULL;
+	return (get_line(&save, bytes_read));
 }	
 
 /*

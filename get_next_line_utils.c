@@ -6,7 +6,7 @@
 /*   By: algultse <algultse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:42:34 by algultse          #+#    #+#             */
-/*   Updated: 2023/11/29 11:05:12 by algultse         ###   ########.fr       */
+/*   Updated: 2023/11/29 16:17:01 by algultse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	char	*s_dest;
 	char	*p_dest;
 	size_t	len;
-	
+
 	if (!s1 || !s2)
 		return (NULL);
 	len = ft_strlen(s1) + ft_strlen(s2);
