@@ -6,14 +6,14 @@
 /*   By: algultse <algultse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:42:24 by algultse          #+#    #+#             */
-/*   Updated: 2023/11/30 12:27:24 by algultse         ###   ########.fr       */
+/*   Updated: 2023/11/30 12:30:35 by algultse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
 
-char	*get_save(char **save, char **line, size_t *len_n, char **tmp)
+static char	*get_save(char **save, char **line, size_t *len_n, char **tmp)
 {
 	while ((*save)[*len_n] != '\n')
 		(*len_n)++;
@@ -40,7 +40,7 @@ char	*get_save(char **save, char **line, size_t *len_n, char **tmp)
 	return (*save);
 }
 
-char	*get_line(char **save, ssize_t bytes_read)
+static char	*get_line(char **save, ssize_t bytes_read)
 {
 	char	*line;
 	size_t	len_n;
@@ -69,7 +69,7 @@ char	*get_line(char **save, ssize_t bytes_read)
 	return (line);
 }
 
-char	*read_buf(int fd, char **save, char **buf, ssize_t *bytes_read)
+static char	*read_buf(int fd, char **save, char **buf, ssize_t *bytes_read)
 {
 	char	*tmp;
 	
@@ -102,7 +102,6 @@ char	*get_next_line(int fd)
 	static char	*save;
 	char		*buf;
 	ssize_t		bytes_read;
-	char		*tmp;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
