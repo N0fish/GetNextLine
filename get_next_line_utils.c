@@ -6,7 +6,7 @@
 /*   By: algultse <algultse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:42:34 by algultse          #+#    #+#             */
-/*   Updated: 2023/11/29 16:17:01 by algultse         ###   ########.fr       */
+/*   Updated: 2023/11/30 12:26:06 by algultse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,6 @@ char	*ft_strchr(const char *s, int c)
 	return ((char *)s);
 }
 
-void	ft_bzero(void *str, size_t len)
-{
-	unsigned char	*buf;
-
-	buf = (unsigned char *)str;
-	while (len--)
-		buf[len] = 0;
-}
-
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*s_dest;
@@ -79,4 +70,31 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		*s_dest++ = *s2++;
 	*s_dest = '\0';
 	return (p_dest);
+}
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char			*p;
+	unsigned int	i;
+	size_t			s_len;
+
+	if (!s)
+		return (NULL);
+	s_len = ft_strlen(s);
+	if (start >= s_len)
+		return (ft_strdup(""));
+	if (len > s_len - start)
+		len = s_len - start;
+	p = malloc(sizeof(char) * (len + 1));
+	if (!p)
+		return (NULL);
+	i = 0;
+	while (*s && len > 0)
+	{
+		p[i] = s[start + i];
+		i++;
+		len--;
+	}
+	p[i] = '\0';
+	return (p);
 }
