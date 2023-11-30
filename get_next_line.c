@@ -6,12 +6,11 @@
 /*   By: algultse <algultse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:42:24 by algultse          #+#    #+#             */
-/*   Updated: 2023/11/30 12:30:35 by algultse         ###   ########.fr       */
+/*   Updated: 2023/11/30 14:59:25 by algultse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
 static char	*get_save(char **save, char **line, size_t *len_n, char **tmp)
 {
@@ -83,7 +82,6 @@ static char	*read_buf(int fd, char **save, char **buf, ssize_t *bytes_read)
 	(*buf)[*bytes_read] = '\0';
 	if (*bytes_read != 0)
 	{
-		tmp = NULL;
 		if (!*save)
 			tmp = ft_strdup(*buf);
 		else
@@ -133,59 +131,12 @@ int	main()
 {
 	char *res;
 	int	fd = open("./get_next_line.h", O_RDONLY);
-	// printf("1, %s", get_next_line(fd));
-	// printf("2, %s", get_next_line(fd));
-	// printf("3, %s", get_next_line(fd));
-
 
 	while ((res = get_next_line(fd))) {
 		printf("%s", res);
 	}
 	close(fd);
+	printf("\n[%d]", fd);
 	return (0);
 }
 */
-
-// char	*get_next_line(int fd)
-// {
-// 	static char	*save;
-// 	char		*buf;
-// 	ssize_t		bytes_read;
-// 	char		*tmp;
-
-// 	if (fd < 0 || BUFFER_SIZE <= 0)
-// 		return (NULL);
-// 	buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-// 	if (!buf)
-// 		return (NULL);
-// 	bytes_read = 1;
-// 	while (bytes_read > 0)
-// 	{
-// 		bytes_read = read(fd, buf, BUFFER_SIZE);
-// 		if (bytes_read == -1)
-// 		{
-// 			free(buf);
-// 			buf = NULL;
-// 			return (NULL);
-// 		}
-// 		buf[bytes_read] = '\0';
-// 		if (bytes_read != 0)
-// 		{
-// 			tmp = NULL;
-// 			if (!save)
-// 				tmp = ft_strdup(buf);
-// 			else
-// 			{
-// 				tmp = ft_strjoin(save, buf);
-// 				free(save);
-// 				save = NULL;
-// 			}
-// 			save = tmp;
-// 			if (ft_strchr(save, '\n'))
-// 				break ;
-// 		}
-// 	}
-// 	free(buf);
-// 	buf = NULL;
-// 	return (get_line(&save, bytes_read));
-// }	
