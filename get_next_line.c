@@ -6,7 +6,7 @@
 /*   By: algultse <algultse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:42:24 by algultse          #+#    #+#             */
-/*   Updated: 2023/11/30 14:59:25 by algultse         ###   ########.fr       */
+/*   Updated: 2023/12/01 11:54:30 by algultse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static char	*get_line(char **save, ssize_t bytes_read)
 	{
 		line = ft_strdup(*save);
 		free(*save);
-		*save = NULL; 
+		*save = NULL;
 		return (line);
 	}
 	len_n = 0;
@@ -71,7 +71,7 @@ static char	*get_line(char **save, ssize_t bytes_read)
 static char	*read_buf(int fd, char **save, char **buf, ssize_t *bytes_read)
 {
 	char	*tmp;
-	
+
 	*bytes_read = read(fd, *buf, BUFFER_SIZE);
 	if (*bytes_read == -1)
 	{
