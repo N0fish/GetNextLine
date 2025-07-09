@@ -1,10 +1,12 @@
 <img title="42_GNL" alt="42_GNL" src="./subject/banner.png" width="100%">
 
+|          Grade          |          Tests          |
+|:-----------------------:|:-----------------------:|
+| ![](./subject/grade.png) | ![](./subject/detail.png) |
+
 <br>
 
 ---
-
-<br>
 
 <details>
 <summary>🇫🇷 FRENCH VERSION</summary>
@@ -14,15 +16,15 @@
 </p>
 
 ## Préambule
-Le but est d’implémenter une fonction en C qui lit un fichier ligne par ligne, sans charger le fichier entier en mémoire. Ce projet vous apprend à manipuler les descripteurs de fichiers, les variables statiques et la gestion de la mémoire.
+Le but est d’implémenter une fonction en C qui lit un fichier ligne par ligne, sans charger le fichier entier en mémoire. Ce projet vous apprend à manipuler les file descriptors, les variables statiques et la gestion de la mémoire.
 
 ## Fonction:
 ```c
 char *get_next_line(int fd);
 ```
-- Retourne une chaîne se terminant par `\n` lue depuis le descripteur de fichier `fd`.
+- Retourne une chaîne se terminant par `\n` lue depuis le file descriptor `fd`.
 - Retourne `NULL` si la fin du fichier est atteinte ou en cas d'erreur.
-- Une version `bonus` est également disponible, prenant en charge plusieurs descripteurs de fichiers simultanément.
+- Une version `bonus` est également disponible, prenant en charge plusieurs file descriptors simultanément.
 
 ## Installation
 ```bash
@@ -42,11 +44,7 @@ gcc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line_bonus.c get_next_line_
 
 </details>
 
-<br>
-
 ---
-
-<br>
 
 <details>
 <summary>🇬🇧 ENGLISH VERSION</summary>
@@ -62,7 +60,7 @@ The goal is to implement a function in C that reads a file line by line, without
 ```c
 char *get_next_line(int fd);
 ```
-- Returns a string ending with \n read from the file descriptor fd.
+- Returns a string ending with `\n` read from the file descriptor `fd`.
 - Returns `NULL` if the end of file is reached or an error occurs.
 - A `bonus` version is also implemented, supporting multiple file descriptors simultaneously.
 
@@ -84,11 +82,7 @@ gcc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line_bonus.c get_next_line_
 
 </details>
 
-<br>
-
----  
-
-<br>
+---
 
 <details>
 <summary>🇷🇺 RUSSIAN VERSION</summary>
@@ -125,8 +119,6 @@ gcc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line_bonus.c get_next_line_
 ```
 
 </details>
-
-<br>
 
 ---
 
