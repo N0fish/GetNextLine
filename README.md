@@ -1,6 +1,10 @@
-<h1 align="center">
-	GetNextLine
-</h1>
+<img title="42_GNL" alt="42_GNL" src="./subject/banner.png" width="100%">
+
+<br>
+
+---
+
+<br>
 
 <details>
 <summary>🇫🇷 FRENCH VERSION</summary>
